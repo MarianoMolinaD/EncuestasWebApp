@@ -3,6 +3,7 @@ using Entity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace EncuestasWebApp.Controllers
 {
@@ -18,8 +19,18 @@ namespace EncuestasWebApp.Controllers
         }
 
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            try
+            {
+                int userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+                var Surveys = await _surveyDal.SurveyShow(userId);
+                return View(Surveys);
+            }
+            catch (Exception ex)
+            {
+                ViewData["Error"] = "Ocurrio un error al obtener la información";
+            }
             return View();
         }
 
@@ -33,7 +44,6 @@ namespace EncuestasWebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(SurveyCreateViewModel model)
         {
-
             try
             {
                 if (!ModelState.IsValid)
@@ -44,7 +54,7 @@ namespace EncuestasWebApp.Controllers
 
                 int surveyId = await _surveyDal.CreateSurveyAsync(model);
 
-                TempData["Success"] = "Encuesta creada exitosamente.";
+                TempData["Success"] = $"Encuesta No {surveyId} creada exitosamente.";
                 return RedirectToAction("Index");
             }
             catch(Exception ex)

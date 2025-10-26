@@ -65,5 +65,24 @@ namespace DAL
                 throw;
             }
         }
+
+        public async Task<IEnumerable<SurveyShowViewModel>> SurveyShow(int userId)
+        {
+            using IDbConnection db = new SqlConnection(_connectionString);
+            try
+            {
+                string selectSurvey = @$"SELECT T0.Id, [name] as Name, [Description], UniqueLink,CONVERT(DATE,T0.CreatedAt) AS CreatedAt , COUNT(T1.Id) OVER(PARTITION BY T0.Id) AS Responses
+                                        FROM Surveys T0
+                                        LEFT JOIN Responses T1 ON T0.Id = T1.SurveyId
+                                        WHERE T0.UserId = {userId}";
+
+                return await db.QueryAsync<SurveyShowViewModel>(selectSurvey, commandType: CommandType.Text);
+            }
+
+            catch (SqlException ex)
+            {
+                throw;
+            }
+        }
     }
 }

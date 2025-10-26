@@ -1,8 +1,21 @@
-﻿@{
+﻿@model IEnumerable<Entity.SurveyShowViewModel>
+@{
     ViewData["Title"] = "Mis encuestas";
 }
 
 <div class="container mt-4">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success text-center py-2">
+            @TempData["Success"]
+        </div>
+    }
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center py-2">
+            @TempData["Error"]
+        </div>
+    }
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="mb-0">
             <i class="bi bi-list-task me-2 text-primary"></i>Mis encuestas
@@ -18,40 +31,56 @@
             <table class="table table-hover align-middle">
                 <thead class="table-primary text-center">
                     <tr>
-                        <th>Nombre</th>
-                        <th>Link</th>
-                        <th>Respondidas</th>
+                        <th>Id</th>
+                        <th>Encuesta</th>
+                        <th>Descripcion</th>
+                        <th>Enlace</th>
+                        <th>Fecha de creacion</th>
+                        <th>Respuestas</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var survey in Model)
                     {
-                        string surveyUrl = Url.Action("ViewSurvey", "Surveys", new { id = survey.Id }, Context.Request.Scheme);
+                        string surveyUrl = Url.Action("ViewSurvey", "Surveys", new { id = survey.UniqueLink }, Context.Request.Scheme);
 
                         <tr>
-                            <td>@survey.Title</td>
+                            <td>@survey.Id</td>
+                            <td>@survey.Name</td>
+                            <td>@survey.Description</td>
                             <td>
-                                <input type="text" class="form-control form-control-sm text-center" readonly
-                                       value="@surveyUrl" id="link-@survey.Id" />
+                                <div class="input-group input-group-sm">
+                                    <input type="text"
+                                           class="form-control text-center"
+                                           readonly
+                                           value="@surveyUrl"
+                                           id="link-@survey.UniqueLink" />
+                                    <button class="btn btn-outline-primary" type="button"
+                                            onclick = "copyLink('@survey.UniqueLink')">
+                                        <i class="bi bi-clipboard"></i>
+                                    </button>
+                                </div>
                             </td>
-                            <td class="text-center fw-bold">
-                                <span class="badge bg-info">@survey.ResponsesCount</span>
-                            </td>
+                            <td style="text-align:center;">@survey.CreatedAt.ToString("dd/MM/yyyy")</td>
+                            <td style="text-align:center;">@survey.Responses</td>
                             <td class="text-center">
-                                <button class="btn btn-outline-primary btn-sm me-1" title="Copiar link"
-                                        onclick="copyLink(@survey.Id)">
-                                    <i class="bi bi-clipboard"></i>
-                                </button>
-                                <a href="@Url.Action("Edit", "Surveys", new { id = survey.Id })"
-                                   class="btn btn-outline-warning btn-sm me-1" title="Editar">
-                                    <i class="bi bi-pencil-square"></i>
-                                </a>
-                                <button class="btn btn-outline-danger btn-sm" title="Eliminar"
-                                        onclick="confirmDelete(@survey.Id, '@survey.Title')">
-                                    <i class="bi bi-trash"></i>
-                                </button>
+                                <div class="btn-group" role="group">
+                                    <a href="@Url.Action("Edit", "Surveys", new { id = survey.Id })"
+                                       class="btn btn-outline-warning btn-sm"
+                                       title="Editar encuesta">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+
+                                    <button type="button"
+                                            class="btn btn-outline-danger btn-sm"
+                                            title="Eliminar encuesta"
+                                            onclick="confirmDelete('@survey.Id', '@survey.Name')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
                             </td>
+
                         </tr>
                     }
                 </tbody>
@@ -67,40 +96,42 @@
 </div>
 
 @section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
-        // Copiar link al portapapeles
+        
+            function showToast(message, type = 'success') {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',       // esquina superior derecha
+                showConfirmButton: false,  // sin botón
+                timer: 2500,               // duración (2.5 segundos)
+                timerProgressBar: true,
+                background: '#fff',
+                customClass: {
+                    popup: 'shadow-sm rounded-3'
+                },
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                }
+            });
+
+            // 🔹 Mostrar el toast según el tipo
+            Toast.fire({
+                icon: type,    // 'success', 'error', 'warning', 'info', 'question'
+                title: message
+            });
+        }
+
         function copyLink(id) {
-            const input = document.getElementById(`link-${id}`);
+            const input = document.getElementById('link-'+id);
             input.select();
             input.setSelectionRange(0, 99999);
             navigator.clipboard.writeText(input.value);
-            showToast('Link copiado al portapapeles', 'success');
+             showToast('Link copiado al portapapeles', 'success')
         }
 
-        // Confirmar eliminación
-        function confirmDelete(id, title) {
-            if (confirm(`¿Seguro que deseas eliminar la encuesta "${title}"?`)) {
-                window.location.href = `/Surveys/Delete/${id}`;
-            }
-        }
-
-        // Toast para mensajes visuales
-        function showToast(message, type = 'info') {
-            const color = type === 'success' ? 'bg-success' :
-                          type === 'danger' ? 'bg-danger' :
-                          type === 'warning' ? 'bg-warning text-dark' : 'bg-info';
-            const toast = document.createElement('div');
-            toast.className = `toast align-items-center text-white ${color} border-0 position-fixed top-0 end-0 m-3`;
-            toast.role = 'alert';
-            toast.innerHTML = `
-                <div class="d-flex">
-                    <div class="toast-body">${message}</div>
-                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
-                </div>`;
-            document.body.appendChild(toast);
-            const bsToast = new bootstrap.Toast(toast, { delay: 2000 });
-            bsToast.show();
-            bsToast._element.addEventListener('hidden.bs.toast', () => toast.remove());
-        }
     </script>
 }
+
