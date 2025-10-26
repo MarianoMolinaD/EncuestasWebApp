@@ -1,0 +1,107 @@
+﻿@model Entity.SurveyCreateViewModel
+@{
+    ViewData["Title"] = "Crear nueva encuesta";
+}
+
+<div class="container mt-4">
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center py-2">
+            @TempData["Error"]
+        </div>
+    }
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0"><i class="bi bi-ui-checks-grid me-2"></i>Crear Nueva Encuesta</h4>
+        </div>
+
+        <div class="card-body">
+            <form asp-action="Create" method="post" id="surveyForm">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Nombre de la Encuesta</label>
+                    <input asp-for="Name" class="form-control" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Descripción</label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                </div>
+
+                <hr />
+
+                <h5 class="fw-bold mb-3"><i class="bi bi-list-columns me-2"></i>Listado de Campos</h5>
+
+                <div id="fieldsContainer"></div>
+
+                <button type="button" class="btn btn-outline-primary btn-sm" onclick="addField()">
+                    <i class="bi bi-plus-circle"></i> Agregar Campo
+                </button>
+
+                <hr />
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save me-1"></i> Guardar Encuesta
+                    </button>
+                    <a href="@Url.Action("Index", "Surveys")" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let fieldIndex = 0;
+
+        function addField() {
+            
+            const container = document.getElementById("fieldsContainer");
+
+            const fieldHtml = `
+                <div class="card mb-3 border-0 shadow-sm" id="field-${fieldIndex}">
+                    <div class="card-body bg-light">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">Nombre del Campo</label>
+                                <input type="text" name="Fields[${fieldIndex}].FieldName" class="form-control" required />
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">Título del Campo</label>
+                                <input type="text" name="Fields[${fieldIndex}].FieldTitle" class="form-control" required />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label fw-bold">Tipo</label>
+                                <select name="Fields[${fieldIndex}].FieldType" class="form-select">
+                                    <option value="Text">Texto</option>
+                                    <option value="Number">Número</option>
+                                    <option value="Date">Fecha</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label fw-bold">Requerido</label>
+                                <select name="Fields[${fieldIndex}].IsRequired" class="form-select">
+                                    <option value="true">Sí</option>
+                                    <option value="false">No</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 text-end">
+                                <button type="button" class="btn btn-outline-danger mt-4" onclick="removeField(${fieldIndex})">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+
+            fieldIndex++;
+            container.insertAdjacentHTML('beforeend', fieldHtml);
+        }
+
+        function removeField(index) {
+            const fieldCard = document.getElementById(`field-${index}`);
+            if (fieldCard) fieldCard.remove();
+        }
+    </script>
+}

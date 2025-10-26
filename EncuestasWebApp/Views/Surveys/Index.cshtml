@@ -1,1 +1,106 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Mis encuestas";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">
+            <i class="bi bi-list-task me-2 text-primary"></i>Mis encuestas
+        </h2>
+        <a href="@Url.Action("Create", "Surveys")" class="btn btn-success">
+            <i class="bi bi-plus-circle me-1"></i> Nueva encuesta
+        </a>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive shadow-sm">
+            <table class="table table-hover align-middle">
+                <thead class="table-primary text-center">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Link</th>
+                        <th>Respondidas</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var survey in Model)
+                    {
+                        string surveyUrl = Url.Action("ViewSurvey", "Surveys", new { id = survey.Id }, Context.Request.Scheme);
+
+                        <tr>
+                            <td>@survey.Title</td>
+                            <td>
+                                <input type="text" class="form-control form-control-sm text-center" readonly
+                                       value="@surveyUrl" id="link-@survey.Id" />
+                            </td>
+                            <td class="text-center fw-bold">
+                                <span class="badge bg-info">@survey.ResponsesCount</span>
+                            </td>
+                            <td class="text-center">
+                                <button class="btn btn-outline-primary btn-sm me-1" title="Copiar link"
+                                        onclick="copyLink(@survey.Id)">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                                <a href="@Url.Action("Edit", "Surveys", new { id = survey.Id })"
+                                   class="btn btn-outline-warning btn-sm me-1" title="Editar">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+                                <button class="btn btn-outline-danger btn-sm" title="Eliminar"
+                                        onclick="confirmDelete(@survey.Id, '@survey.Title')">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center mt-4">
+            <i class="bi bi-info-circle"></i> No tienes encuestas creadas todavía.
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // Copiar link al portapapeles
+        function copyLink(id) {
+            const input = document.getElementById(`link-${id}`);
+            input.select();
+            input.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(input.value);
+            showToast('Link copiado al portapapeles', 'success');
+        }
+
+        // Confirmar eliminación
+        function confirmDelete(id, title) {
+            if (confirm(`¿Seguro que deseas eliminar la encuesta "${title}"?`)) {
+                window.location.href = `/Surveys/Delete/${id}`;
+            }
+        }
+
+        // Toast para mensajes visuales
+        function showToast(message, type = 'info') {
+            const color = type === 'success' ? 'bg-success' :
+                          type === 'danger' ? 'bg-danger' :
+                          type === 'warning' ? 'bg-warning text-dark' : 'bg-info';
+            const toast = document.createElement('div');
+            toast.className = `toast align-items-center text-white ${color} border-0 position-fixed top-0 end-0 m-3`;
+            toast.role = 'alert';
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">${message}</div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                </div>`;
+            document.body.appendChild(toast);
+            const bsToast = new bootstrap.Toast(toast, { delay: 2000 });
+            bsToast.show();
+            bsToast._element.addEventListener('hidden.bs.toast', () => toast.remove());
+        }
+    </script>
+}
