@@ -9,3 +9,4 @@ C:\Users\Acer nitro 5\Desktop\EncuestasWebApp\EncuestasWebAppSolucion\Entity\obj
 C:\Users\Acer nitro 5\Desktop\EncuestasWebApp\EncuestasWebAppSolucion\Entity\obj\Debug\net8.0\refint\Entity.dll
 C:\Users\Acer nitro 5\Desktop\EncuestasWebApp\EncuestasWebAppSolucion\Entity\obj\Debug\net8.0\Entity.pdb
 C:\Users\Acer nitro 5\Desktop\EncuestasWebApp\EncuestasWebAppSolucion\Entity\obj\Debug\net8.0\ref\Entity.dll
+C:\Users\Acer nitro 5\Desktop\EncuestasWebApp\EncuestasWebAppSolucion\Entity\obj\Debug\net8.0\Entity.sourcelink.json

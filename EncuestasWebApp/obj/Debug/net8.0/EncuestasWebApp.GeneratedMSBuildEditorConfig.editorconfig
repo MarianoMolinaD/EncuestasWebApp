@@ -20,6 +20,10 @@ build_property._RazorSourceGeneratorDebug =
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
+[C:/Users/Acer nitro 5/Desktop/EncuestasWebApp/EncuestasWebAppSolucion/EncuestasWebApp/Views/Account/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Acer nitro 5/Desktop/EncuestasWebApp/EncuestasWebAppSolucion/EncuestasWebApp/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -34,6 +38,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/Acer nitro 5/Desktop/EncuestasWebApp/EncuestasWebAppSolucion/EncuestasWebApp/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Acer nitro 5/Desktop/EncuestasWebApp/EncuestasWebAppSolucion/EncuestasWebApp/Views/Surveys/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VydmV5c1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Acer nitro 5/Desktop/EncuestasWebApp/EncuestasWebAppSolucion/EncuestasWebApp/Views/_ViewImports.cshtml]

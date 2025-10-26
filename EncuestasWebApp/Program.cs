@@ -1,4 +1,22 @@
+using EncuestasWebApp.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 var builder = WebApplication.CreateBuilder(args);
+
+//SERVICIO HASHEAR
+builder.Services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();
+
+//CLAIMS
+builder.Services.AddAuthentication("CookieAuth")
+    .AddCookie("CookieAuth", options =>
+    {
+        options.LoginPath = "/Account/index";
+        options.ExpireTimeSpan = TimeSpan.FromHours(2);
+        options.SlidingExpiration = true;
+        options.Cookie.HttpOnly = true;
+    });
+
+builder.Services.AddAuthentication();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -18,10 +36,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Index}/{id?}");
 
 app.Run();

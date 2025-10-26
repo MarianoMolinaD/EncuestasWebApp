@@ -13,3 +13,4 @@ C:\Users\Acer nitro 5\Desktop\EncuestasWebApp\EncuestasWebAppSolucion\DAL\obj\De
 C:\Users\Acer nitro 5\Desktop\EncuestasWebApp\EncuestasWebAppSolucion\DAL\obj\Debug\net8.0\refint\DAL.dll
 C:\Users\Acer nitro 5\Desktop\EncuestasWebApp\EncuestasWebAppSolucion\DAL\obj\Debug\net8.0\DAL.pdb
 C:\Users\Acer nitro 5\Desktop\EncuestasWebApp\EncuestasWebAppSolucion\DAL\obj\Debug\net8.0\ref\DAL.dll
+C:\Users\Acer nitro 5\Desktop\EncuestasWebApp\EncuestasWebAppSolucion\DAL\obj\Debug\net8.0\DAL.sourcelink.json
