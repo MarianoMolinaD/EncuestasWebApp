@@ -3,20 +3,36 @@
   "WorkspaceRootPath": "C:\\Users\\Acer nitro 5\\Desktop\\EncuestasWebApp\\EncuestasWebAppSolucion\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{78527334-EA0E-4BAC-8A2F-30B4A6CC55D8}|EncuestasWebApp\\EncuestasWebApp.csproj|c:\\users\\acer nitro 5\\desktop\\encuestaswebapp\\encuestaswebappsolucion\\encuestaswebapp\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{78527334-EA0E-4BAC-8A2F-30B4A6CC55D8}|EncuestasWebApp\\EncuestasWebApp.csproj|solutionrelative:encuestaswebapp\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{78527334-EA0E-4BAC-8A2F-30B4A6CC55D8}|EncuestasWebApp\\EncuestasWebApp.csproj|c:\\users\\acer nitro 5\\desktop\\encuestaswebapp\\encuestaswebappsolucion\\encuestaswebapp\\controllers\\surveyscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{78527334-EA0E-4BAC-8A2F-30B4A6CC55D8}|EncuestasWebApp\\EncuestasWebApp.csproj|solutionrelative:encuestaswebapp\\controllers\\surveyscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}|NewFolder1{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}|C:\\Users\\Acer nitro 5\\Desktop\\EncuestasWebApp\\EncuestasWebAppSolucion\\CreateDatabase.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}",
+      "RelativeMoniker": "D:0:0:{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}|NewFolder1{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}|solutionrelative:CreateDatabase.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{78527334-EA0E-4BAC-8A2F-30B4A6CC55D8}|EncuestasWebApp\\EncuestasWebApp.csproj|c:\\users\\acer nitro 5\\desktop\\encuestaswebapp\\encuestaswebappsolucion\\encuestaswebapp\\views\\surveys\\fillsurvey.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{78527334-EA0E-4BAC-8A2F-30B4A6CC55D8}|EncuestasWebApp\\EncuestasWebApp.csproj|solutionrelative:encuestaswebapp\\views\\surveys\\fillsurvey.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{78527334-EA0E-4BAC-8A2F-30B4A6CC55D8}|EncuestasWebApp\\EncuestasWebApp.csproj|c:\\users\\acer nitro 5\\desktop\\encuestaswebapp\\encuestaswebappsolucion\\encuestaswebapp\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{78527334-EA0E-4BAC-8A2F-30B4A6CC55D8}|EncuestasWebApp\\EncuestasWebApp.csproj|solutionrelative:encuestaswebapp\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{78527334-EA0E-4BAC-8A2F-30B4A6CC55D8}|EncuestasWebApp\\EncuestasWebApp.csproj|c:\\users\\acer nitro 5\\desktop\\encuestaswebapp\\encuestaswebappsolucion\\encuestaswebapp\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{78527334-EA0E-4BAC-8A2F-30B4A6CC55D8}|EncuestasWebApp\\EncuestasWebApp.csproj|solutionrelative:encuestaswebapp\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{78527334-EA0E-4BAC-8A2F-30B4A6CC55D8}|EncuestasWebApp\\EncuestasWebApp.csproj|c:\\users\\acer nitro 5\\desktop\\encuestaswebapp\\encuestaswebappsolucion\\encuestaswebapp\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{78527334-EA0E-4BAC-8A2F-30B4A6CC55D8}|EncuestasWebApp\\EncuestasWebApp.csproj|solutionrelative:encuestaswebapp\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{78527334-EA0E-4BAC-8A2F-30B4A6CC55D8}|EncuestasWebApp\\EncuestasWebApp.csproj|c:\\users\\acer nitro 5\\desktop\\encuestaswebapp\\encuestaswebappsolucion\\encuestaswebapp\\views\\surveys\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{78527334-EA0E-4BAC-8A2F-30B4A6CC55D8}|EncuestasWebApp\\EncuestasWebApp.csproj|solutionrelative:encuestaswebapp\\views\\surveys\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{78527334-EA0E-4BAC-8A2F-30B4A6CC55D8}|EncuestasWebApp\\EncuestasWebApp.csproj|c:\\users\\acer nitro 5\\desktop\\encuestaswebapp\\encuestaswebappsolucion\\encuestaswebapp\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{78527334-EA0E-4BAC-8A2F-30B4A6CC55D8}|EncuestasWebApp\\EncuestasWebApp.csproj|solutionrelative:encuestaswebapp\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}|NewFolder1{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}|C:\\Users\\Acer nitro 5\\Desktop\\EncuestasWebApp\\EncuestasWebAppSolucion\\CreateDatabase.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|CodeFrame",
+      "RelativeMoniker": "D:0:0:{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}|NewFolder1{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}|solutionrelative:CreateDatabase.sql||{CC5D8DF0-88F4-4BB2-9DBB-B48CEE65C30A}|CodeFrame"
     }
   ],
   "DocumentGroupContainers": [
@@ -26,7 +42,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 470,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -47,19 +63,57 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "CreateDatabase.sql ",
+              "DocumentMoniker": "C:\\Users\\Acer nitro 5\\Desktop\\EncuestasWebApp\\EncuestasWebAppSolucion\\CreateDatabase.sql",
+              "RelativeDocumentMoniker": "CreateDatabase.sql",
+              "ToolTip": "C:\\Users\\Acer nitro 5\\Desktop\\EncuestasWebApp\\EncuestasWebAppSolucion\\CreateDatabase.sql",
+              "RelativeToolTip": "CreateDatabase.sql",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-10-27T12:39:27.883Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SurveysController.cs",
+              "DocumentMoniker": "C:\\Users\\Acer nitro 5\\Desktop\\EncuestasWebApp\\EncuestasWebAppSolucion\\EncuestasWebApp\\Controllers\\SurveysController.cs",
+              "RelativeDocumentMoniker": "EncuestasWebApp\\Controllers\\SurveysController.cs",
+              "ToolTip": "C:\\Users\\Acer nitro 5\\Desktop\\EncuestasWebApp\\EncuestasWebAppSolucion\\EncuestasWebApp\\Controllers\\SurveysController.cs",
+              "RelativeToolTip": "EncuestasWebApp\\Controllers\\SurveysController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAG0AAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-27T12:36:55.743Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "FillSurvey.cshtml",
+              "DocumentMoniker": "C:\\Users\\Acer nitro 5\\Desktop\\EncuestasWebApp\\EncuestasWebAppSolucion\\EncuestasWebApp\\Views\\Surveys\\FillSurvey.cshtml",
+              "RelativeDocumentMoniker": "EncuestasWebApp\\Views\\Surveys\\FillSurvey.cshtml",
+              "ToolTip": "C:\\Users\\Acer nitro 5\\Desktop\\EncuestasWebApp\\EncuestasWebAppSolucion\\EncuestasWebApp\\Views\\Surveys\\FillSurvey.cshtml",
+              "RelativeToolTip": "EncuestasWebApp\\Views\\Surveys\\FillSurvey.cshtml",
+              "ViewState": "AgIAACQAAAAAAAAAAAAAACsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-10-27T12:28:41.1Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "C:\\Users\\Acer nitro 5\\Desktop\\EncuestasWebApp\\EncuestasWebAppSolucion\\EncuestasWebApp\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "EncuestasWebApp\\Views\\Shared\\_Layout.cshtml",
               "ToolTip": "C:\\Users\\Acer nitro 5\\Desktop\\EncuestasWebApp\\EncuestasWebAppSolucion\\EncuestasWebApp\\Views\\Shared\\_Layout.cshtml",
               "RelativeToolTip": "EncuestasWebApp\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAACYAAABSAAAAAAAAAA==",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAACYAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-10-27T12:00:34.563Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 6,
               "Title": "Create.cshtml",
               "DocumentMoniker": "C:\\Users\\Acer nitro 5\\Desktop\\EncuestasWebApp\\EncuestasWebAppSolucion\\EncuestasWebApp\\Views\\Surveys\\Create.cshtml",
               "RelativeDocumentMoniker": "EncuestasWebApp\\Views\\Surveys\\Create.cshtml",
@@ -67,18 +121,17 @@
               "RelativeToolTip": "EncuestasWebApp\\Views\\Surveys\\Create.cshtml",
               "ViewState": "AgIAABQAAAAAAAAAAAAAACkAAABCAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-10-27T11:58:31.838Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-27T11:58:31.838Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 5,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\Acer nitro 5\\Desktop\\EncuestasWebApp\\EncuestasWebAppSolucion\\EncuestasWebApp\\appsettings.json",
               "RelativeDocumentMoniker": "EncuestasWebApp\\appsettings.json",
               "ToolTip": "C:\\Users\\Acer nitro 5\\Desktop\\EncuestasWebApp\\EncuestasWebAppSolucion\\EncuestasWebApp\\appsettings.json",
               "RelativeToolTip": "EncuestasWebApp\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAABlAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-10-27T11:54:24.558Z",
               "EditorCaption": ""
@@ -91,7 +144,7 @@
               "RelativeDocumentMoniker": "EncuestasWebApp\\Controllers\\AccountController.cs",
               "ToolTip": "C:\\Users\\Acer nitro 5\\Desktop\\EncuestasWebApp\\EncuestasWebAppSolucion\\EncuestasWebApp\\Controllers\\AccountController.cs",
               "RelativeToolTip": "EncuestasWebApp\\Controllers\\AccountController.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAQwCAAAAAQAAAAAAAAAA==",
+              "ViewState": "AgIAABYAAAAAAAAAAAAzwCAAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-27T11:37:00.267Z",
               "EditorCaption": ""

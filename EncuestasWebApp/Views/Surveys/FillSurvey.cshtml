@@ -24,19 +24,19 @@
                         <input type="text" class="form-control"
                                name="Answers[@field.Id].Value"
                                data-field-id="@field.Id"
-                               required="@field.IsRequired" />
+                               @(field.IsRequired ? "required" : "") />
                         break;
                     case "Number":
                         <input type="number" class="form-control"
                                name="Answers[@field.Id].Value"
                                data-field-id="@field.Id"
-                               required="@field.IsRequired" />
+                               @(field.IsRequired ? "required" : "") />
                         break;
                     case "Date":
                         <input type="date" class="form-control"
                                name="Answers[@field.Id].Value"
                                data-field-id="@field.Id"
-                               required="@field.IsRequired" />
+                               @(field.IsRequired ? "required" : "") />
                         break;
                 }
             </div>

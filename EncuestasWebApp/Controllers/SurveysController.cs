@@ -107,7 +107,7 @@ namespace EncuestasWebApp.Controllers
             try
             {
                 var survey = await _surveyDal.GetSurveyWithFieldsByLinkAsync(link);
-
+                    
                 if (survey == null)
                 {
                     return NotFound("Encuesta no encontrada o eliminada.");
