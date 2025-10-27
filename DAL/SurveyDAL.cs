@@ -66,7 +66,7 @@ namespace DAL
             }
         }
 
-        public async Task<IEnumerable<SurveyShowViewModel>> SurveyShow(int userId)
+        public async Task<IEnumerable<SurveyShowViewModel>> SurveyShowAsync(int userId)
         {
             using IDbConnection db = new SqlConnection(_connectionString);
             try
@@ -74,12 +74,26 @@ namespace DAL
                 string selectSurvey = @$"SELECT T0.Id, [name] as Name, [Description], UniqueLink,CONVERT(DATE,T0.CreatedAt) AS CreatedAt , COUNT(T1.Id) OVER(PARTITION BY T0.Id) AS Responses
                                         FROM Surveys T0
                                         LEFT JOIN Responses T1 ON T0.Id = T1.SurveyId
-                                        WHERE T0.UserId = {userId}";
+                                        WHERE T0.UserId = {userId} AND T0.Deleted = 'N'";
 
                 return await db.QueryAsync<SurveyShowViewModel>(selectSurvey, commandType: CommandType.Text);
             }
 
             catch (SqlException ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<int> DeleteSurveryAsync(int id)
+        {
+            try
+            {
+                using IDbConnection db = new SqlConnection(_connectionString);
+                string query = "UPDATE Surveys SET Deleted = 'Y' WHERE Id = @Id";
+                return await db.ExecuteAsync(query, new { Id = id }, commandType: CommandType.Text);
+            }
+            catch
             {
                 throw;
             }

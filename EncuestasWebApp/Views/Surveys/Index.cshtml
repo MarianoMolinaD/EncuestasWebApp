@@ -45,7 +45,7 @@
                     {
                         string surveyUrl = Url.Action("ViewSurvey", "Surveys", new { id = survey.UniqueLink }, Context.Request.Scheme);
 
-                        <tr>
+                        <tr data-id="@(survey.Id)">
                             <td>@survey.Id</td>
                             <td>@survey.Name</td>
                             <td>@survey.Description</td>
@@ -57,7 +57,7 @@
                                            value="@surveyUrl"
                                            id="link-@survey.UniqueLink" />
                                     <button class="btn btn-outline-primary" type="button"
-                                            onclick = "copyLink('@survey.UniqueLink')">
+                                            onclick="copyLink('@survey.UniqueLink')">
                                         <i class="bi bi-clipboard"></i>
                                     </button>
                                 </div>
@@ -99,13 +99,13 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        
+
             function showToast(message, type = 'success') {
             const Toast = Swal.mixin({
                 toast: true,
-                position: 'top-end',       // esquina superior derecha
-                showConfirmButton: false,  // sin botón
-                timer: 2500,               // duración (2.5 segundos)
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2500,
                 timerProgressBar: true,
                 background: '#fff',
                 customClass: {
@@ -117,9 +117,8 @@
                 }
             });
 
-            // 🔹 Mostrar el toast según el tipo
             Toast.fire({
-                icon: type,    // 'success', 'error', 'warning', 'info', 'question'
+                icon: type,
                 title: message
             });
         }
@@ -132,6 +131,41 @@
              showToast('Link copiado al portapapeles', 'success')
         }
 
+        function confirmDelete(id, name) {
+            Swal.fire({
+                title: `¿Eliminar encuesta "${name}"?`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#6c757d",
+                confirmButtonText: "Sí, eliminar",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    DeletedSurveys(id);
+                }
+            });
+        }
+
+        async function DeletedSurveys(id){
+            try {
+                const response = await fetch(`/Surveys/Delete/${id}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast(data.message, 'success')
+                    document.querySelector(`tr[data-id='${id}']`)?.remove();
+                } else {
+                    showToast(data.message, 'Error')
+                }
+            } catch (error) {
+                showToast(data.message, 'Error')
+            }
+        }
     </script>
 }
 
