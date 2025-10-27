@@ -71,7 +71,7 @@ namespace DAL
             using IDbConnection db = new SqlConnection(_connectionString);
             try
             {
-                string selectSurvey = @$"SELECT T0.Id, [name] as Name, [Description], UniqueLink,CONVERT(DATE,T0.CreatedAt) AS CreatedAt , COUNT(T1.Id) OVER(PARTITION BY T0.Id) AS Responses
+                string selectSurvey = @$"SELECT DISTINCT T0.Id, [name] as Name, [Description], UniqueLink,CONVERT(DATE,T0.CreatedAt) AS CreatedAt , COUNT(T1.Id) OVER(PARTITION BY T0.Id) AS Responses
                                         FROM Surveys T0
                                         LEFT JOIN Responses T1 ON T0.Id = T1.SurveyId
                                         WHERE T0.UserId = {userId} AND T0.Deleted = 'N'";
@@ -98,5 +98,147 @@ namespace DAL
                 throw;
             }
         }
+        public async Task<SurveyFillViewModel?> GetSurveyWithFieldsByLinkAsync(string link)
+        {
+            using var db = new SqlConnection(_connectionString);
+            const string query = @"
+                                SELECT Id, [Name], Description 
+                                FROM Surveys 
+                                WHERE UniqueLink = @Link AND Deleted = 'N';
+
+                                SELECT Id, FieldName, FieldTitle, FieldType, IsRequired 
+                                FROM SurveyFields 
+                                WHERE SurveyId = (SELECT Id FROM Surveys WHERE UniqueLink = @Link);";
+
+            using var multi = await db.QueryMultipleAsync(query, new { Link = link });
+            var survey = await multi.ReadFirstOrDefaultAsync<SurveyFillViewModel>();
+            if (survey != null)
+                survey.Fields = (await multi.ReadAsync<SurveyFieldViewModel>()).ToList();
+
+            return survey;
+        }
+
+        public async Task SaveSurveyResponseAsync(SurveyResponseViewModel model)
+        {
+            using var db = new SqlConnection(_connectionString);
+            await db.OpenAsync();
+            using var tx = db.BeginTransaction();
+
+            try
+            {
+                string insertResponse = @"
+                                        INSERT INTO Responses (SurveyId)
+                                        VALUES (@SurveyId);
+                                        SELECT CAST(SCOPE_IDENTITY() AS INT);";
+
+                int responseId = await db.ExecuteScalarAsync<int>(
+                    insertResponse,
+                    new { model.SurveyId },
+                    tx
+                );
+
+                string insertDetail = @"
+                                        INSERT INTO ResponseDetails (ResponseId, FieldId, [Value])
+                                        VALUES (@ResponseId, @FieldId, @Value);";
+
+                foreach (var answer in model.Answers)
+                {
+                    await db.ExecuteAsync(insertDetail, new
+                    {
+                        ResponseId = responseId,
+                        FieldId = answer.FieldId,
+                        Value = answer.Value
+                    }, tx);
+                }
+
+                tx.Commit();
+            }
+            catch
+            {
+                tx.Rollback();
+                throw;
+            }
+        }
+
+        public async Task<SurveyEditViewModel?> GetSurveyWithFieldsAsync(int id)
+        {
+            using var db = new SqlConnection(_connectionString);
+
+            const string query = @"
+                                    SELECT Id, [Name], Description
+                                    FROM Surveys
+                                    WHERE Id = @Id AND Deleted = 'N';
+
+                                    SELECT Id, FieldName, FieldTitle, FieldType, IsRequired
+                                    FROM SurveyFields
+                                    WHERE SurveyId = @Id;";
+
+            using var multi = await db.QueryMultipleAsync(query, new { Id = id });
+
+            var survey = await multi.ReadFirstOrDefaultAsync<SurveyEditViewModel>();
+            if (survey != null)
+                survey.Fields = (await multi.ReadAsync<SurveyFieldEditViewModel>()).ToList();
+
+            return survey;
+        }
+
+        public async Task UpdateSurveyAsync(SurveyEditViewModel survey)
+        {
+            using var db = new SqlConnection(_connectionString);
+            await db.OpenAsync();
+            using var tx = db.BeginTransaction();
+
+            try
+            {
+                const string updateSurvey = @"
+                                            UPDATE Surveys
+                                            SET [Name] = @Name,
+                                                Description = @Description
+                                            WHERE Id = @Id;";
+
+                await db.ExecuteAsync(updateSurvey, survey, tx);
+
+                foreach (var field in survey.Fields)
+                {
+                    if (field.Id == 0)
+                    {
+                        // Nuevo campo
+                        const string insert = @"
+                                                INSERT INTO SurveyFields (SurveyId, FieldName, FieldTitle, FieldType, IsRequired)
+                                                VALUES (@SurveyId, @FieldName, @FieldTitle, @FieldType, @IsRequired);";
+
+                        await db.ExecuteAsync(insert, new
+                        {
+                            SurveyId = survey.Id,
+                            field.FieldName,
+                            field.FieldTitle,
+                            field.FieldType,
+                            field.IsRequired
+                        }, tx);
+                    }
+                    else
+                    {
+                        const string update = @"
+                                                UPDATE SurveyFields
+                                                SET FieldName = @FieldName,
+                                                    FieldTitle = @FieldTitle,
+                                                    FieldType = @FieldType,
+                                                    IsRequired = @IsRequired
+                                                WHERE Id = @Id;";
+
+                        await db.ExecuteAsync(update, field, tx);
+                    }
+                }
+
+                tx.Commit();
+            }
+            catch
+            {
+                tx.Rollback();
+                throw;
+            }
+        }
+
+
     }
 }

@@ -1,0 +1,99 @@
+﻿@model Entity.SurveyFillViewModel
+@{
+    ViewData["Title"] = "Encuesta: " + Model.Name;
+}
+
+<div class="container mt-4">
+    <h2 class="mb-3">@Model.Name</h2>
+    @if (!string.IsNullOrEmpty(Model.Description))
+    {
+        <p class="text-muted">@Model.Description</p>
+    }
+
+    <form id="surveyForm">
+        <input type="hidden" name="SurveyId" value="@Model.Id" />
+
+        @foreach (var field in Model.Fields)
+        {
+            <div class="mb-3">
+                <label class="form-label fw-bold">@field.FieldTitle</label>
+
+                @switch (field.FieldType)
+                {
+                    case "Text":
+                        <input type="text" class="form-control"
+                               name="Answers[@field.Id].Value"
+                               data-field-id="@field.Id"
+                               required="@field.IsRequired" />
+                        break;
+                    case "Number":
+                        <input type="number" class="form-control"
+                               name="Answers[@field.Id].Value"
+                               data-field-id="@field.Id"
+                               required="@field.IsRequired" />
+                        break;
+                    case "Date":
+                        <input type="date" class="form-control"
+                               name="Answers[@field.Id].Value"
+                               data-field-id="@field.Id"
+                               required="@field.IsRequired" />
+                        break;
+                }
+            </div>
+        }
+
+        <button type="button" class="btn btn-primary" onclick="submitSurvey()">
+            <i class="bi bi-send me-1"></i> Enviar respuestas
+        </button>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+                async function submitSurvey() {
+                    const surveyId = document.querySelector('input[name="SurveyId"]').value;
+                    const answers = [];
+
+                    document.querySelectorAll("[data-field-id]").forEach(el => {
+                        answers.push({
+                            FieldId: parseInt(el.getAttribute("data-field-id")),
+                            Value: el.value
+                        });
+                    });
+
+                    const body = JSON.stringify({ surveyId, answers });
+                    try {
+                        const response = await fetch("/Surveys/SubmitSurvey", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body
+                        });
+
+                        const data = await response.json();
+
+                        if (data.success) {
+                            Swal.fire({
+                                icon: "success",
+                                title: data.message,
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+                            document.getElementById("surveyForm").reset();
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error",
+                                text: data.message
+                            });
+                        }
+                    } catch (error) {
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error de conexión",
+                            text: "No se pudo enviar la encuesta."
+                        });
+                    }
+                }
+    </script>
+}

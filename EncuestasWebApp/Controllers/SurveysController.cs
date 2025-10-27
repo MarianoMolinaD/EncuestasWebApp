@@ -85,7 +85,7 @@ namespace EncuestasWebApp.Controllers
             {
                 if (!ModelState.IsValid)
                     return View(model);
-                
+
                 int surveyId = await _surveyDal.CreateSurveyAsync(model);
 
                 TempData["Success"] = $"Encuesta No {surveyId} creada exitosamente.";
@@ -97,5 +97,73 @@ namespace EncuestasWebApp.Controllers
                 return View();
             }
         }
+
+        [HttpGet("Surveys/ViewSurvey/{link}")]
+        public async Task<IActionResult> ViewSurvey(string link)
+        {
+            var survey = await _surveyDal.GetSurveyWithFieldsByLinkAsync(link);
+
+            if (survey == null)
+            {
+                return NotFound("Encuesta no encontrada o eliminada.");
+            }
+
+            return View("FillSurvey", survey);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SubmitSurvey([FromBody] SurveyResponseViewModel model)
+        {
+            if (model == null || model.SurveyId <= 0 || model.Answers == null || !model.Answers.Any())
+            {
+                return Json(new { success = false, message = "Datos inválidos." });
+            }
+
+            try
+            {
+                await _surveyDal.SaveSurveyResponseAsync(model);
+                return Json(new { success = true, message = "Respuestas guardadas correctamente." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al guardar las respuestas." });
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var survey = await _surveyDal.GetSurveyWithFieldsAsync(id);
+            if (survey == null)
+            {
+                TempData["Error"] = "Encuesta no encontrada.";
+                return RedirectToAction("Index");
+            }
+            return View(survey);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(SurveyEditViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["Error"] = "Datos inválidos.";
+                return View(model);
+            }
+
+            try
+            {
+                await _surveyDal.UpdateSurveyAsync(model);
+                TempData["Success"] = "Encuesta actualizada correctamente.";
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                TempData["Error"] = "Error al actualizar la encuesta.";
+                return View(model);
+            }
+        }
+
+
     }
 }

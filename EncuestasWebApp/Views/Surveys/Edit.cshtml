@@ -1,4 +1,129 @@
-﻿@model Entity.SurveyCreateViewModel;
+﻿@model Entity.SurveyEditViewModel
 @{
     ViewData["Title"] = "Editar encuesta";
+}
+
+<div class="container mt-4">
+    <div class="card border-0 shadow-lg rounded-3">
+        <div class="card-header bg-gradient text-white"
+             style="background: linear-gradient(90deg, #ffc107 0%, #ff9800 100%);">
+            <h4 class="mb-0 fw-bold"><i class="bi bi-pencil-square me-2"></i>Editar encuesta</h4>
+        </div>
+
+        <div class="card-body bg-light-subtle">
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-4">
+                    <label asp-for="Name" class="form-label fw-bold text-warning">Nombre</label>
+                    <input asp-for="Name" class="form-control shadow-sm" required />
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Description" class="form-label fw-bold text-warning">Descripción</label>
+                    <textarea asp-for="Description" class="form-control shadow-sm" rows="3"></textarea>
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-secondary mb-0">
+                        <i class="bi bi-list-columns me-2 text-warning"></i>Campos de la encuesta
+                    </h5>
+                    <button type="button" class="btn btn-outline-warning btn-sm shadow-sm" onclick="addField()">
+                        <i class="bi bi-plus-circle me-1"></i> Agregar campo
+                    </button>
+                </div>
+
+                <table class="table table-hover align-middle shadow-sm bg-white rounded">
+                    <thead class="table-warning text-center">
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Titulo</th>
+                            <th>Tipo</th>
+                            <th>Requerido</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="fieldsTable">
+                        @for (int i = 0; i < Model.Fields.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    <input asp-for="@Model.Fields[i].FieldName" class="form-control" required />
+                                    <input type="hidden" asp-for="@Model.Fields[i].Id" />
+                                </td>
+                                <td>
+                                    <input asp-for="@Model.Fields[i].FieldTitle" class="form-control" required />
+                                </td>
+                                <td>
+                                    <select asp-for="@Model.Fields[i].FieldType" class="form-select">
+                                        <option value="Text">Texto</option>
+                                        <option value="Number">Número</option>
+                                        <option value="Date">Fecha</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <select name="Fields[@i].IsRequired" class="form-select">
+                                        <option value="true" selected="@(Model.Fields[i].IsRequired)">Sí</option>
+                                        <option value="false" selected="@(!Model.Fields[i].IsRequired)">No</option>
+                                    </select>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeField(this)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-success px-4 shadow-sm">
+                        <i class="bi bi-save me-1"></i>Guardar cambios
+                    </button>
+                    <a href="@Url.Action("Index")" class="btn btn-outline-secondary px-4 ms-2 shadow-sm">
+                        <i class="bi bi-arrow-left"></i>Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function removeField(btn) {
+            btn.closest("tr").remove();
+        }
+
+        function addField() {
+            const table = document.getElementById("fieldsTable");
+            const rowCount = table.rows.length;
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td><input name="Fields[${rowCount}].FieldName" class="form-control" required /></td>
+                <td><input name="Fields[${rowCount}].FieldTitle" class="form-control" required /></td>
+                <td>
+                    <select name="Fields[${rowCount}].FieldType" class="form-select">
+                        <option value="Text">Texto</option>
+                        <option value="Number">Número</option>
+                        <option value="Date">Fecha</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="Fields[${rowCount}].IsRequired" class="form-select">
+                        <option value="true">Sí</option>
+                        <option value="false">No</option>
+                    </select>
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeField(this)">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>`;
+            table.appendChild(row);
+        }
+    </script>
 }
