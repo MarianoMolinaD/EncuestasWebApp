@@ -34,5 +34,4 @@ namespace Entity
         public int FieldId { get; set; }
         public string Value { get; set; } = "";
     }
-
 }

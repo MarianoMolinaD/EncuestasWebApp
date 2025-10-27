@@ -1,0 +1,69 @@
+﻿@model Entity.SurveyResultsViewModel
+@{
+    ViewData["Title"] = "Resultados de la encuesta";
+}
+
+<div class="container py-4">
+    <div class="card shadow-lg border-0 rounded-3">
+        <div class="card-header bg-gradient text-white"
+             style="background: linear-gradient(90deg, #198754 0%, #20c997 100%);">
+            <h4 class="mb-0 fw-bold">
+                <i class="bi bi-bar-chart-fill me-2"></i>@Model.SurveyName
+            </h4>
+        </div>
+
+        <div class="card-body bg-light-subtle">
+            <div class="mb-2">
+                <p class="text-muted mb-1"><i class="bi bi-info-circle me-1"></i>@Model.Description</p>
+                <small class="text-secondary">Creada el @Model.CreatedAt.ToString("dd/MM/yyyy")</small>
+            </div>
+
+            <hr class="my-3" />
+
+            @if (Model.Fields.Any())
+            {
+                @foreach (var field in Model.Fields)
+                {
+                    <div class="mb-4 p-3 border-start border-4 border-success bg-white shadow-sm rounded-3">
+                        <h5 class="fw-bold text-success mb-3">
+                            <i class="bi bi-question-circle me-2"></i>@field.FielTitle
+                        </h5>
+
+                        @if (field.Responses == null || !field.Responses.Any())
+                        {
+                            <p class="text-muted">Sin respuestas registradas.</p>
+                        }
+                        else
+                        {
+                            <ul class="list-group list-group-flush">
+                                @foreach (var response in field.Responses)
+                                {
+                                    <li class="list-group-item">
+                                        <i class="bi bi-dot text-success me-1"></i> @response
+                                    </li>
+                                }
+                            </ul>
+
+                            <p class="text-end small text-muted mt-2">
+                                Total de respuestas: <strong>@field.Responses.Count</strong>
+                            </p>
+                        }
+                    </div>
+                }
+
+            }
+            else
+            {
+                <div class="alert alert-info text-center">
+                    <i class="bi bi-info-circle"></i> No hay respuestas aún para esta encuesta.
+                </div>
+            }
+
+            <div class="text-end mt-3">
+                <a href="@Url.Action("Index", "Surveys")" class="btn btn-outline-secondary shadow-sm">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

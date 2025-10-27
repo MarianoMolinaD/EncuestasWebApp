@@ -64,6 +64,7 @@ namespace EncuestasWebApp.Controllers
             }
         }
 
+        [Authorize]
         public async Task<JsonResult> Delete(int id)
         {
             try
@@ -79,6 +80,8 @@ namespace EncuestasWebApp.Controllers
                 return Json(new { success = false, message = "No se pudo eliminar la encuesta" });
             }
         }
+
+        [Authorize]
         public async Task<IActionResult> Edit(SurveyCreateViewModel model)
         {
             try
@@ -101,14 +104,21 @@ namespace EncuestasWebApp.Controllers
         [HttpGet("Surveys/ViewSurvey/{link}")]
         public async Task<IActionResult> ViewSurvey(string link)
         {
-            var survey = await _surveyDal.GetSurveyWithFieldsByLinkAsync(link);
-
-            if (survey == null)
+            try
             {
-                return NotFound("Encuesta no encontrada o eliminada.");
-            }
+                var survey = await _surveyDal.GetSurveyWithFieldsByLinkAsync(link);
 
-            return View("FillSurvey", survey);
+                if (survey == null)
+                {
+                    return NotFound("Encuesta no encontrada o eliminada.");
+                }
+
+                return View("FillSurvey", survey);
+            }
+            catch
+            {
+                return RedirectToAction("Error","Home"); 
+            }    
         }
 
         [HttpPost]
@@ -130,6 +140,7 @@ namespace EncuestasWebApp.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -142,6 +153,7 @@ namespace EncuestasWebApp.Controllers
             return View(survey);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Edit(SurveyEditViewModel model)
         {
@@ -164,6 +176,30 @@ namespace EncuestasWebApp.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> Results(int id)
+        {
+            try
+            {
+                var results = await _surveyDal.GetSurveyResultsAsync(id);
+
+                if (results == null)
+                {
+                    TempData["Error"] = "No se encontraron resultados para esta encuesta.";
+                    return RedirectToAction("Index");
+
+                }
+
+                return View(results);
+
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "Error inesperado al buscar la encuesta.";
+                return RedirectToAction("Index");
+            }
+        }
 
     }
 }

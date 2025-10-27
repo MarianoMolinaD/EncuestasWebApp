@@ -22,7 +22,7 @@ namespace DAL
         public async Task<int> CreateSurveyAsync(SurveyCreateViewModel survey)
         {
             using var db = new SqlConnection(_connectionString);
-            db.OpenAsync();
+            await db.OpenAsync();
             using var transaction = db.BeginTransaction();
 
             try
@@ -59,7 +59,7 @@ namespace DAL
 
                 return surveyId;
             }
-            catch (SqlException ex)
+            catch
             {
                 transaction.Rollback();
                 throw;
@@ -71,15 +71,15 @@ namespace DAL
             using IDbConnection db = new SqlConnection(_connectionString);
             try
             {
-                string selectSurvey = @$"SELECT DISTINCT T0.Id, [name] as Name, [Description], UniqueLink,CONVERT(DATE,T0.CreatedAt) AS CreatedAt , COUNT(T1.Id) OVER(PARTITION BY T0.Id) AS Responses
-                                        FROM Surveys T0
-                                        LEFT JOIN Responses T1 ON T0.Id = T1.SurveyId
-                                        WHERE T0.UserId = {userId} AND T0.Deleted = 'N'";
+                string selectSurvey = @$"SELECT DISTINCT s.Id, [name] as Name, [Description], UniqueLink,CONVERT(DATE,s.CreatedAt) AS CreatedAt , COUNT(r.Id) OVER(PARTITION BY s.Id) AS Responses
+                                        FROM Surveys s
+                                        LEFT JOIN Responses r ON s.Id = r.SurveyId
+                                        WHERE s.UserId = {userId} AND s.Deleted = 'N'";
 
                 return await db.QueryAsync<SurveyShowViewModel>(selectSurvey, commandType: CommandType.Text);
             }
 
-            catch (SqlException ex)
+            catch
             {
                 throw;
             }
@@ -101,7 +101,9 @@ namespace DAL
         public async Task<SurveyFillViewModel?> GetSurveyWithFieldsByLinkAsync(string link)
         {
             using var db = new SqlConnection(_connectionString);
-            const string query = @"
+            try
+            {
+                const string query = @"
                                 SELECT Id, [Name], Description 
                                 FROM Surveys 
                                 WHERE UniqueLink = @Link AND Deleted = 'N';
@@ -110,12 +112,18 @@ namespace DAL
                                 FROM SurveyFields 
                                 WHERE SurveyId = (SELECT Id FROM Surveys WHERE UniqueLink = @Link);";
 
-            using var multi = await db.QueryMultipleAsync(query, new { Link = link });
-            var survey = await multi.ReadFirstOrDefaultAsync<SurveyFillViewModel>();
-            if (survey != null)
-                survey.Fields = (await multi.ReadAsync<SurveyFieldViewModel>()).ToList();
+                using var multi = await db.QueryMultipleAsync(query, new { Link = link });
+                var survey = await multi.ReadFirstOrDefaultAsync<SurveyFillViewModel>();
+                if (survey != null)
+                    survey.Fields = (await multi.ReadAsync<SurveyFieldViewModel>()).ToList();
 
-            return survey;
+                return survey;
+            }
+            catch
+            {
+                throw;
+            }
+            
         }
 
         public async Task SaveSurveyResponseAsync(SurveyResponseViewModel model)
@@ -163,8 +171,9 @@ namespace DAL
         public async Task<SurveyEditViewModel?> GetSurveyWithFieldsAsync(int id)
         {
             using var db = new SqlConnection(_connectionString);
-
-            const string query = @"
+            try
+            {
+                const string query = @"
                                     SELECT Id, [Name], Description
                                     FROM Surveys
                                     WHERE Id = @Id AND Deleted = 'N';
@@ -173,13 +182,18 @@ namespace DAL
                                     FROM SurveyFields
                                     WHERE SurveyId = @Id;";
 
-            using var multi = await db.QueryMultipleAsync(query, new { Id = id });
+                using var multi = await db.QueryMultipleAsync(query, new { Id = id });
 
-            var survey = await multi.ReadFirstOrDefaultAsync<SurveyEditViewModel>();
-            if (survey != null)
-                survey.Fields = (await multi.ReadAsync<SurveyFieldEditViewModel>()).ToList();
+                var survey = await multi.ReadFirstOrDefaultAsync<SurveyEditViewModel>();
+                if (survey != null)
+                    survey.Fields = (await multi.ReadAsync<SurveyFieldEditViewModel>()).ToList();
 
-            return survey;
+                return survey;
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public async Task UpdateSurveyAsync(SurveyEditViewModel survey)
@@ -202,7 +216,6 @@ namespace DAL
                 {
                     if (field.Id == 0)
                     {
-                        // Nuevo campo
                         const string insert = @"
                                                 INSERT INTO SurveyFields (SurveyId, FieldName, FieldTitle, FieldType, IsRequired)
                                                 VALUES (@SurveyId, @FieldName, @FieldTitle, @FieldType, @IsRequired);";
@@ -239,6 +252,46 @@ namespace DAL
             }
         }
 
+        public async Task<SurveyResultsViewModel?> GetSurveyResultsAsync(int surveyId)
+        {
+            try
+            {
+                using var db = new SqlConnection(_connectionString);
+
+                string querySurvey = @"
+                                        SELECT [Name], Description, CreatedAt 
+                                        FROM Surveys 
+                                        WHERE Id = @surveyId;";
+
+                string queryFields = @"
+                                        SELECT sf.Id AS FieldId, sf.FieldTitle AS FielTitle, sf.FieldType, rd.[Value]
+                                        FROM SurveyFields sf
+                                        LEFT JOIN ResponseDetails rd ON rd.FieldId = sf.Id
+                                        WHERE sf.SurveyId = @surveyId
+                                        ORDER BY sf.Id;";
+
+                var survey = await db.QueryFirstOrDefaultAsync<SurveyResultsViewModel>(querySurvey, new { surveyId });
+                if (survey == null) return null;
+
+                var resultRows = await db.QueryAsync<FieldResultRow>(queryFields, new { surveyId });
+
+                survey.Fields = resultRows
+                    .GroupBy(r => new { r.FieldId, r.FielTitle, r.FieldType })
+                    .Select(g => new FieldResultViewModel
+                    {
+                        FielTitle = g.Key.FielTitle,
+                        FieldType = g.Key.FieldType,
+                        Responses = g.Select(x => x.Value).Where(v => v != null).ToList()
+                    })
+                    .ToList();
+
+                return survey;
+            }
+            catch
+            {
+                throw;
+            }
+        }
 
     }
 }

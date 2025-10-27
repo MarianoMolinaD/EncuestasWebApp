@@ -27,6 +27,7 @@ namespace EncuestasWebApp.Controllers
             try
             {
                 var user = await _userDal.GetByUserNameAsync(userName);
+                string hasPassword = _hasher.Hash("Admin");
 
                 if (user == null || !_hasher.Verify(password, user.PasswordHash))
                 {
